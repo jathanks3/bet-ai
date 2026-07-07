@@ -1,0 +1,41 @@
+/* src/ui/UserMessage.css */
+
+.user-message-row {
+  width: 100%;
+  max-width: 640px;
+  margin: var(--space-lg) auto 0;
+  display: flex;
+  justify-content: flex-end;
+  animation: user-message-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.user-message-bubble {
+  max-width: 85%;
+  padding: 10px 16px;
+  background: var(--accent-trust-dim);
+  border: 1px solid rgba(91, 141, 239, 0.28);
+  border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@keyframes user-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .user-message-row {
+    margin: var(--space-lg) 12px 0;
+    width: auto;
+  }
+}

@@ -1,0 +1,33 @@
+/* src/features/betai/components/FindABetPanel.css */
+
+.find-a-bet-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.find-a-bet-empty-state-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.find-a-bet-example-chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.find-a-bet-example-chip:hover {
+  border-color: var(--accent-trust);
+  color: var(--text-primary);
+}

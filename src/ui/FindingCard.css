@@ -1,0 +1,106 @@
+/* src/ui/FindingCard.css */
+
+.finding-card {
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+  background: var(--bg-surface-raised);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  animation: finding-card-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes finding-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rec-list .finding-card:nth-child(1) { animation-delay: 0.03s; }
+.rec-list .finding-card:nth-child(2) { animation-delay: 0.08s; }
+.rec-list .finding-card:nth-child(3) { animation-delay: 0.13s; }
+.rec-list .finding-card:nth-child(4) { animation-delay: 0.18s; }
+.rec-list .finding-card:nth-child(5) { animation-delay: 0.23s; }
+.rec-list .finding-card:nth-child(6) { animation-delay: 0.28s; }
+.rec-list .finding-card:nth-child(n + 7) { animation-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .finding-card {
+    animation: none;
+  }
+}
+
+.finding-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.finding-impact-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.finding-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.finding-title-row {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.finding-detail {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.finding-meta {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.impact-positive {
+  border-left-color: var(--accent-signal);
+  background: var(--accent-signal-dim);
+}
+.impact-positive .finding-impact-icon {
+  background: var(--accent-signal);
+  color: #051912;
+}
+
+.impact-negative {
+  border-left-color: var(--accent-danger);
+  background: var(--accent-danger-dim);
+}
+.impact-negative .finding-impact-icon {
+  background: var(--accent-danger);
+  color: #2a0a0d;
+}
+
+.impact-neutral {
+  border-left-color: var(--accent-trust);
+  background: var(--accent-trust-dim);
+}
+.impact-neutral .finding-impact-icon {
+  background: var(--accent-trust);
+  color: #0a1530;
+}

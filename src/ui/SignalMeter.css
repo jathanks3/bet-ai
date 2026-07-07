@@ -1,0 +1,121 @@
+/* src/ui/SignalMeter.css */
+
+.signal-meter {
+  width: 100%;
+}
+
+.signal-meter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.signal-meter-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.signal-meter-score {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.signal-meter-score-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.signal-meter-score-max {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.signal-meter-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-surface-raised);
+  overflow: hidden;
+}
+
+.signal-meter-fill {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-trust), var(--accent-signal));
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.signal-meter-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-meter-fill::after {
+    animation: none;
+  }
+}
+
+.signal-meter-zones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: var(--text-tertiary);
+}
+
+.signal-meter-zone {
+  flex: 1;
+}
+
+.signal-meter-zone:first-child {
+  text-align: left;
+}
+
+.signal-meter-zone:not(:first-child):not(:last-child) {
+  text-align: center;
+}
+
+.signal-meter-zone:last-child {
+  text-align: right;
+}

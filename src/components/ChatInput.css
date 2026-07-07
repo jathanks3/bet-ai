@@ -1,0 +1,80 @@
+/* src/components/ChatInput.css */
+
+.chat-input-form {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-input-form:focus-within {
+  border-color: var(--accent-trust);
+  box-shadow: 0 0 0 3px var(--accent-trust-dim);
+}
+
+.chat-input-field {
+  flex: 1;
+  padding: 12px 14px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.chat-input-field::placeholder {
+  color: var(--text-tertiary);
+}
+
+.chat-input-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent-signal);
+  color: #051912;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.chat-input-button:hover {
+  opacity: 0.9;
+}
+
+.chat-input-button:active {
+  transform: scale(0.97);
+}
+
+.chat-input-button:disabled {
+  background: var(--bg-surface-raised);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .chat-input-form {
+    margin: 0 12px;
+  }
+
+  .chat-input-button {
+    padding: 11px 14px;
+  }
+
+  .chat-input-button-text {
+    display: none;
+  }
+}

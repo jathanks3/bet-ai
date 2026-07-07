@@ -1,0 +1,45 @@
+/* src/ui/Badge.css */
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.badge-success {
+  background: var(--accent-signal-dim);
+  color: var(--accent-signal);
+  border-color: rgba(47, 224, 168, 0.28);
+}
+
+.badge-warning {
+  background: var(--accent-risk-dim);
+  color: var(--accent-risk);
+  border-color: rgba(245, 166, 35, 0.28);
+}
+
+.badge-danger {
+  background: var(--accent-danger-dim);
+  color: var(--accent-danger);
+  border-color: rgba(255, 92, 108, 0.28);
+}
+
+.badge-info {
+  background: var(--accent-trust-dim);
+  color: var(--accent-trust);
+  border-color: rgba(91, 141, 239, 0.28);
+}
+
+.badge-neutral {
+  background: var(--bg-surface-raised);
+  color: var(--text-secondary);
+  border-color: var(--border-subtle);
+}

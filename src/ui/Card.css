@@ -1,0 +1,31 @@
+/* src/ui/Card.css */
+
+.ui-card {
+  position: relative;
+  width: 100%;
+  margin: 40px auto;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.ui-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-accent, transparent);
+}
+
+@media (max-width: 480px) {
+  .ui-card {
+    margin: 20px 12px;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+}

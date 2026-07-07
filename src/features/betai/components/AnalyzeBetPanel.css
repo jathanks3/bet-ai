@@ -1,0 +1,164 @@
+/* src/features/betai/components/AnalyzeBetPanel.css */
+
+.analyze-bet-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.analyze-bet-form {
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.analyze-bet-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 110px;
+  padding: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analyze-bet-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.analyze-bet-textarea:focus {
+  border-color: var(--accent-trust);
+  box-shadow: 0 0 0 3px var(--accent-trust-dim);
+}
+
+.analyze-bet-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  font-size: 13px;
+  cursor: not-allowed;
+}
+
+.analyze-bet-upload svg {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+.analyze-bet-upload span:nth-child(2) {
+  flex: 1;
+}
+
+.analyze-bet-upload-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.analyze-bet-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.analyze-bet-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.analyze-bet-example-chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.analyze-bet-example-chip:hover {
+  border-color: var(--accent-trust);
+  color: var(--text-primary);
+}
+
+.analyze-bet-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent-signal);
+  color: #051912;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.1s ease, opacity 0.15s ease;
+}
+
+.analyze-bet-submit-hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.analyze-bet-submit:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.analyze-bet-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.analyze-bet-submit:disabled {
+  background: var(--bg-surface-raised);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.analyze-bet-submit:disabled .analyze-bet-submit-hint {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .analyze-bet-form {
+    margin: 0 12px;
+    width: auto;
+  }
+
+  .analyze-bet-form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .analyze-bet-submit {
+    justify-content: center;
+  }
+}

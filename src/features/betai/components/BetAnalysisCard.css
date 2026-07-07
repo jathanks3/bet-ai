@@ -1,0 +1,234 @@
+/* src/features/betai/components/BetAnalysisCard.css */
+
+/* ---- Header ---- */
+.rec-question {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+  font-style: italic;
+}
+
+.rec-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--accent-trust);
+  margin-bottom: var(--space-sm);
+}
+
+.rec-pick-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.rec-pick-name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* ---- Edge / Risk callouts ---- */
+.rec-callouts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.rec-callout {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+}
+
+.rec-callout-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.rec-callout-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.rec-callout-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.rec-callout-edge {
+  background: var(--accent-signal-dim);
+  border-left-color: var(--accent-signal);
+}
+.rec-callout-edge .rec-callout-icon {
+  background: var(--accent-signal);
+  color: #051912;
+}
+.rec-callout-edge .rec-callout-label {
+  color: var(--accent-signal);
+}
+
+.rec-callout-risk {
+  background: var(--accent-danger-dim);
+  border-left-color: var(--accent-danger);
+}
+.rec-callout-risk .rec-callout-icon {
+  background: var(--accent-danger);
+  color: #2a0a0d;
+}
+.rec-callout-risk .rec-callout-label {
+  color: var(--accent-danger);
+}
+
+@media (max-width: 480px) {
+  .rec-callouts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Sections ---- */
+.rec-section {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.rec-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-md);
+}
+
+.rec-section-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-trust { background: var(--accent-trust); }
+.dot-signal { background: var(--accent-signal); }
+.dot-risk { background: var(--accent-risk); }
+.dot-danger { background: var(--accent-danger); }
+
+.rec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rec-list-item {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* ---- Leg section (used for both single bets and parlay legs) ---- */
+.leg-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.leg-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.leg-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.leg-number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--accent-trust);
+  background: var(--accent-trust-dim);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.leg-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.leg-bet-type {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-signal);
+}
+
+.leg-rating {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Disclaimer footer ---- */
+.rec-disclaimer {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.rec-disclaimer-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+  display: block;
+}

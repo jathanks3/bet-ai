@@ -1,0 +1,50 @@
+/* src/ui/Tabs.css */
+
+.ui-tabs {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.ui-tab {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.ui-tab:hover {
+  color: var(--text-primary);
+}
+
+.ui-tab-active {
+  background: var(--bg-surface-raised);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+
+@media (max-width: 480px) {
+  .ui-tabs {
+    margin: 0 12px;
+  }
+
+  .ui-tab {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+}

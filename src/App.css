@@ -1,0 +1,67 @@
+/* src/App.css */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2xl) var(--space-lg) var(--space-2xl);
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.app-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.app-logo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-signal);
+  box-shadow: 0 0 12px var(--accent-signal);
+}
+
+.app-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.app-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.app-panel {
+  margin-top: var(--space-2xl);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    padding: var(--space-xl) var(--space-md) var(--space-xl);
+  }
+
+  .app-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .app-panel {
+    margin-top: var(--space-xl);
+  }
+}

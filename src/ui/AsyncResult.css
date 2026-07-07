@@ -1,0 +1,55 @@
+/* src/ui/AsyncResult.css */
+
+.async-result {
+  margin-top: var(--space-2xl);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  scroll-margin-top: var(--space-lg);
+}
+
+.async-result-error {
+  text-align: center;
+  color: var(--accent-danger);
+  background: var(--accent-danger-dim);
+  border: 1px solid rgba(255, 92, 108, 0.28);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 420px;
+  margin-top: var(--space-xl);
+}
+
+.async-result-idle {
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 14px;
+  margin-top: var(--space-xl);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+.async-result-success {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  animation: async-result-reveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes async-result-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .async-result-success {
+    animation: none;
+  }
+}
