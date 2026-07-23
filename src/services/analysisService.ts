@@ -1,5 +1,6 @@
 // src/services/analysisService.ts
-import type { BetSlipAnalysis, BetLeg, Finding, League, BetType, Verdict } from "../types/betting";
+import type { BetSlipAnalysis, BetLeg, Finding, League, BetType, Verdict, WagerContext } from "../types/betting";
+import { americanToDecimal } from "./oddsMath";
 import type { TrustTier } from "../types/shared";
 import { findTeamMatch, getAllTeams, type CatalogTeam } from "./teamCatalogService";
 import { env } from "./env";
@@ -54,10 +55,11 @@ class MockAnalysisService implements AnalysisService {
   async analyzeBetSlipText(slipText: string): Promise<BetSlipAnalysis> {
     await delay();
 
-    const lines = slipText
+    const allLines = slipText
       .split(/\n|,/)
       .map((line) => line.trim())
       .filter(Boolean);
+    const lines = allLines.filter((line) => !/^(stake|wager|odds|combined odds)\s*:/i.test(line));
 
     if (lines.length === 0) {
       throw new Error(
@@ -72,7 +74,7 @@ class MockAnalysisService implements AnalysisService {
         : buildUnmatchedLeg(line);
     });
 
-    return buildAnalysis(legs, slipText);
+    return buildAnalysis(legs, slipText, parseWagerDetails(allLines));
   }
 
   async analyzeBetSlipImage(): Promise<BetSlipAnalysis> {
@@ -192,11 +194,18 @@ function buildLegForTeam(
 }
 
 function buildUnmatchedLeg(label: string): BetLeg {
+  const betType: BetType = /\b(over|under)\b.*\b(points?|rebounds?|assists?|yards?|goals?)\b/i.test(label)
+    ? "player_prop"
+    : /\b(over|under)\b/i.test(label)
+    ? "total"
+    : /[+-]\d+(?:\.\d+)?/.test(label)
+    ? "spread"
+    : "moneyline";
   return {
     id: nextId("leg"),
     label,
     sport: "NBA",
-    betType: "moneyline",
+    betType,
     legRating: 50,
     findings: [
       {
@@ -222,7 +231,26 @@ function verdictFromRating(rating: number): Verdict {
   return "avoid";
 }
 
-function buildAnalysis(legs: BetLeg[], sourceQuestion?: string): BetSlipAnalysis {
+interface ParsedWagerDetails {
+  stake?: number;
+  americanOdds?: number;
+}
+
+function parseWagerDetails(lines: string[]): ParsedWagerDetails {
+  const source = lines.join(" ");
+  const stakeMatch = source.match(/(?:stake|wager)\s*:\s*\$?(\d+(?:\.\d{1,2})?)/i);
+  const oddsMatch = source.match(/(?:combined\s+)?odds\s*:\s*([+-]\d{3,5})/i);
+  return {
+    stake: stakeMatch ? Number(stakeMatch[1]) : undefined,
+    americanOdds: oddsMatch ? Number(oddsMatch[1]) : undefined,
+  };
+}
+
+function buildAnalysis(
+  legs: BetLeg[],
+  sourceQuestion?: string,
+  parsed: ParsedWagerDetails = {},
+): BetSlipAnalysis {
   const overallRating = Math.round(
     legs.reduce((sum, leg) => sum + leg.legRating, 0) / legs.length
   );
@@ -237,6 +265,17 @@ function buildAnalysis(legs: BetLeg[], sourceQuestion?: string): BetSlipAnalysis
     leg.findings.every((f) => !f.trustTier || f.trustTier === "tier_1_official")
   );
   const overallReliabilityTier: TrustTier = allOfficial ? "tier_1_official" : "tier_2_reported";
+  const defaultOdds = isMultiLeg ? 450 : -110;
+  const americanOdds = parsed.americanOdds ?? defaultOdds;
+  const wager: WagerContext = {
+    description: isMultiLeg ? `${legs.length}-Leg Parlay` : legs[0].label,
+    stake: parsed.stake ?? 25,
+    americanOdds,
+    decimalOdds: americanToDecimal(americanOdds),
+    betType: isMultiLeg ? "parlay" : legs[0].betType,
+    numberOfLegs: legs.length,
+    legSummary: legs.map((leg) => leg.label),
+  };
 
   return {
     id: nextId("analysis"),
@@ -254,6 +293,7 @@ function buildAnalysis(legs: BetLeg[], sourceQuestion?: string): BetSlipAnalysis
     disclaimer:
       "This is not financial advice and no outcome is guaranteed. Bet only what you can afford to lose. If gambling stops being fun, please seek help at 1-800-GAMBLER.",
     generatedAt: new Date().toISOString(),
+    wager,
   };
 }
 

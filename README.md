@@ -9,8 +9,7 @@ BetAI supports three analysis workflows plus two decision tools. The analysis wo
 - **Analyze My Bet** — paste or type a bet slip (one leg per line) and get a full breakdown. Screenshot upload is designed in and coming soon.
 - **Find a Bet** — ask BetAI about a team or matchup ("Best bet for Lakers tonight") and get a research-backed recommendation.
 - **Build My Parlay** — pick a sport, leg count, and risk level, and BetAI assembles and rates a parlay for you.
-- **Compare Odds (Platinum)** — compare realistic demo prices from six sportsbooks for the same wager, including decimal conversion, best price, payout difference, timestamps, stale labels, caching, and manual refresh.
-- **Profit Calculator** — estimate expected value, all-win hypothetical, and break-even scenarios across daily, weekly, monthly, and yearly periods.
+- **Contextual Premium actions** — after an AI analysis, compare realistic demo prices from six sportsbooks or project profit using that analysis's wager, stake, odds, bet type, and parlay context.
 
 Every result reports:
 
@@ -100,16 +99,20 @@ src/
 
 ## Odds provider and entitlement architecture
 
-`OddsProvider` is the stable provider contract. `FixtureOddsProvider` supplies clearly labeled Demo Data without scraping; `ApiOddsProvider` represents the legitimate-provider boundary and returns explicit missing-key/outage errors until a licensed provider is selected. `OddsComparisonService` performs the Platinum check before provider access, then applies caching and manual-refresh behavior.
+`OddsProvider` is the stable provider contract. `FixtureOddsProvider` supplies clearly labeled Demo Data without scraping; `ApiOddsProvider` represents the legitimate-provider boundary and returns explicit missing-key/outage errors until a licensed provider is selected. `OddsComparisonService` performs the Premium check before provider access, then applies caching and manual-refresh behavior. Profit projections perform the same centralized entitlement check before calculation.
+
+Both tools are rendered only from `BetAnalysisCard`, beneath findings and suggested improvements. `BetSlipAnalysis.wager` carries the normalized context: description, stake, American and decimal odds, bet type, leg count, and parlay leg summary. The tools are no longer standalone navigation destinations.
 
 The current app has no backend or authenticated accounts. The centralized client service prevents accidental or UI-only access, but client code cannot provide tamper-proof authorization. When accounts and a backend are added, the backend must repeat `requireEntitlement` before making provider calls and keep provider keys server-side.
 
 ## Known limitations
 
-- Odds are realistic fixtures, not live sportsbook prices, and only the approved Anthony Edwards example market is included.
+- Odds are realistic fixtures, not live sportsbook prices. Fixture mode can model any analyzed single bet or parlay, but it does not confirm that a real provider offers an equivalent parlay market.
 - The API adapter is intentionally a readiness boundary; no sportsbook is scraped and no paid provider is connected.
 - Rate-limit and outage states are modeled for adapters and displayed by the UI, but fixture mode does not generate real network failures.
 - Projections are estimates based on the supplied win rate. Compounding applies a constant expected return per bet and does not model limits, changing stake sizes, pushes, voids, taxes, deposits, or withdrawals.
+- The mock text analyzer parses explicit `Stake:` and `Odds:`/`Combined Odds:` lines. When they are absent it supplies demo defaults ($25 and -110 for singles or +450 for parlays); production slip extraction will need a real parser.
+- Billing, saved bets, and history are not present in the current static application. The centralized upgrade dialog is ready to hand off to billing when that system exists.
 
 ## About 3Stone AI
 

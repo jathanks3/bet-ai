@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateProjection } from "./bettingCalculator";
+import { calculatePremiumProjection, calculateProjection } from "./bettingCalculator";
 
 describe("betting projection", () => {
   it("calculates expected value for negative odds", () => {
@@ -55,5 +55,15 @@ describe("betting projection", () => {
     expect(result.expectedWins).toBe(10);
     expect(result.expectedLosses).toBe(0);
     expect(result.expectedProfit).toBe(1_000);
+  });
+
+  it("enforces Premium before projection execution", () => {
+    expect(() => calculatePremiumProjection("free", {
+      wagerAmount: 25,
+      americanOdds: -115,
+      expectedWinPercent: 55,
+      numberOfBets: 10,
+      period: "weekly",
+    })).toThrow(/Premium/);
   });
 });

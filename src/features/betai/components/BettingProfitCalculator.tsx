@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react";
-import { calculateProjection, type ProjectionPeriod, type ProjectionScenario } from "../../../services/bettingCalculator";
+import { calculatePremiumProjection, type ProjectionPeriod, type ProjectionScenario } from "../../../services/bettingCalculator";
+import { env } from "../../../services/env";
+import type { WagerContext } from "../../../types/betting";
+import { formatAmericanOdds } from "../../../services/oddsMath";
 import "./BettingProfitCalculator.css";
 
-const ODDS_PRESETS = [-110, -150, -200, -300, 100, 150];
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const numberValue = (value: string) => Number(value.replace("+", ""));
 
-export default function BettingProfitCalculator() {
-  const [wager, setWager] = useState("100");
-  const [odds, setOdds] = useState("-110");
+export default function BettingProfitCalculator({ wager }: { wager: WagerContext }) {
   const [winPercent, setWinPercent] = useState("55");
   const [bets, setBets] = useState("10");
   const [period, setPeriod] = useState<ProjectionPeriod>("weekly");
@@ -19,9 +19,9 @@ export default function BettingProfitCalculator() {
   const { result, error } = useMemo(() => {
     try {
       return {
-        result: calculateProjection({
-          wagerAmount: numberValue(wager),
-          americanOdds: numberValue(odds),
+        result: calculatePremiumProjection(env.demoPlan, {
+          wagerAmount: wager.stake,
+          americanOdds: wager.americanOdds,
           expectedWinPercent: numberValue(winPercent),
           numberOfBets: numberValue(bets),
           period,
@@ -34,19 +34,21 @@ export default function BettingProfitCalculator() {
     } catch (caught) {
       return { result: null, error: caught instanceof Error ? caught.message : "Check the input values." };
     }
-  }, [bankroll, bets, compound, odds, period, scenario, wager, winPercent]);
+  }, [bankroll, bets, compound, period, scenario, wager, winPercent]);
 
   return (
     <section className="profit-calculator feature-surface" aria-labelledby="calculator-title">
       <div className="feature-heading">
-        <div><div className="eyebrow-row"><span>Projection tool</span></div><h2 id="calculator-title">Betting Profit Calculator</h2><p>Estimate potential outcomes using your own assumptions.</p></div>
+        <div><div className="eyebrow-row"><span>Premium projection</span></div><h2 id="calculator-title">Betting Profit Calculator</h2><p>Estimate potential outcomes using the wager analyzed above.</p></div>
       </div>
       <div className="calculator-layout">
         <form className="calculator-form" onSubmit={(event) => event.preventDefault()}>
-          <label>Wager Amount<input aria-label="Wager Amount" type="number" min="0.01" step="0.01" value={wager} onChange={(e) => setWager(e.target.value)} /></label>
-          <label>American Odds<input aria-label="American Odds" type="text" inputMode="numeric" value={odds} onChange={(e) => setOdds(e.target.value)} /></label>
-          <div className="preset-row" aria-label="Odds presets">
-            {ODDS_PRESETS.map((preset) => <button type="button" key={preset} onClick={() => setOdds(String(preset))}>{preset > 0 ? `+${preset}` : preset}</button>)}
+          <div className="wager-context-summary">
+            <div><small>Wager</small><strong>{wager.description}</strong></div>
+            <div><small>Stake</small><strong>{money.format(wager.stake)}</strong></div>
+            <div><small>Odds</small><strong>{formatAmericanOdds(wager.americanOdds)} · {wager.decimalOdds.toFixed(2)}</strong></div>
+            <div><small>Bet Type</small><strong>{wager.betType.replace("_", " ")}</strong></div>
+            {wager.numberOfLegs > 1 && <div><small>Legs</small><strong>{wager.numberOfLegs}</strong></div>}
           </div>
           <label>Expected Win %<input aria-label="Expected Win %" type="number" min="0" max="100" step="0.1" value={winPercent} onChange={(e) => setWinPercent(e.target.value)} /></label>
           <label>Number of Bets<input aria-label="Number of Bets" type="number" min="1" step="1" value={bets} onChange={(e) => setBets(e.target.value)} /></label>

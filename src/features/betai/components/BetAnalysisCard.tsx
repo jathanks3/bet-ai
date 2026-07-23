@@ -5,6 +5,7 @@ import Badge from "../../../ui/Badge";
 import type { BadgeIntent } from "../../../ui/Badge";
 import SignalMeter from "../../../ui/SignalMeter";
 import FindingCard from "../../../ui/FindingCard";
+import PremiumActions from "./PremiumActions";
 import "./BetAnalysisCard.css";
 
 interface BetAnalysisCardProps {
@@ -168,6 +169,8 @@ export default function BetAnalysisCard({ analysis }: BetAnalysisCardProps) {
           </ul>
         </div>
       )}
+
+      <PremiumActions analysis={analysis} />
 
       <div className="rec-section">
         <h3 className="rec-section-label">

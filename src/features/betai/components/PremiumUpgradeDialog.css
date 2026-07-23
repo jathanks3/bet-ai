@@ -1,0 +1,57 @@
+.premium-dialog {
+  width: min(calc(100% - 32px), 420px);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: var(--space-lg);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+}
+
+.premium-dialog::backdrop {
+  background: rgba(3, 6, 13, .78);
+}
+
+.premium-dialog-eyebrow {
+  color: var(--accent-signal);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.premium-dialog h2 {
+  margin: 10px 0 8px;
+  font-family: var(--font-display);
+}
+
+.premium-dialog p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.premium-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.premium-dialog-actions button {
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.premium-dialog-secondary {
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.premium-dialog-primary {
+  border: 1px solid var(--accent-signal);
+  background: var(--accent-signal);
+  color: #051912;
+}

@@ -37,6 +37,16 @@ export interface BetLeg {
   findings: Finding[];
 }
 
+export interface WagerContext {
+  description: string;
+  stake: number;
+  americanOdds: number;
+  decimalOdds: number;
+  betType: BetType | "parlay";
+  numberOfLegs: number;
+  legSummary: string[];
+}
+
 // ---- BetSlipAnalysis: the full result ----
 // The one result type for all three workflows. "Find a Bet" produces one
 // with a single leg. "Build My Parlay" and "Analyze My Bet" (multi-leg
@@ -57,4 +67,5 @@ export interface BetSlipAnalysis {
   overallReliabilityTier: TrustTier;
   disclaimer: string;
   generatedAt: string;
+  wager: WagerContext;
 }

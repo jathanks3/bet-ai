@@ -5,10 +5,8 @@ import { OddsProviderError } from "../../../services/oddsProvider";
 import { oddsComparisonService } from "../../../services/oddsComparisonService";
 import { americanToDecimal, formatAmericanOdds, profitForStake } from "../../../services/oddsMath";
 import type { OddsMarket } from "../../../types/odds";
+import type { WagerContext } from "../../../types/betting";
 import "./SportsbookComparison.css";
-
-const DEMO_MARKET_ID = "anthony-edwards-over-28-5-points";
-const COMPARISON_STAKE = 100;
 
 function getErrorMessage(error: unknown) {
   if (error instanceof EntitlementError) return error.message;
@@ -20,7 +18,8 @@ function getErrorMessage(error: unknown) {
   return "Odds could not be loaded. Try again.";
 }
 
-export default function SportsbookComparison() {
+export default function SportsbookComparison({ wager }: { wager: WagerContext }) {
+  const comparisonStake = wager.stake;
   const plan = env.demoPlan;
   const entitled = hasEntitlement(plan, "sportsbook_odds_comparison");
   const [market, setMarket] = useState<OddsMarket | null>(null);
@@ -32,7 +31,7 @@ export default function SportsbookComparison() {
     setLoading(true);
     setError("");
     try {
-      const result = await oddsComparisonService.getMarket(plan, DEMO_MARKET_ID, forceRefresh);
+      const result = await oddsComparisonService.getMarket(plan, wager, forceRefresh);
       setMarket(result.market);
       setFromCache(result.fromCache);
     } catch (caught) {
@@ -40,11 +39,11 @@ export default function SportsbookComparison() {
     } finally {
       setLoading(false);
     }
-  }, [plan]);
+  }, [plan, wager]);
 
   useEffect(() => {
     let active = true;
-    oddsComparisonService.getMarket(plan, DEMO_MARKET_ID)
+    oddsComparisonService.getMarket(plan, wager)
       .then((result) => {
         if (!active) return;
         setMarket(result.market);
@@ -59,7 +58,7 @@ export default function SportsbookComparison() {
     return () => {
       active = false;
     };
-  }, [plan]);
+  }, [plan, wager]);
 
   const bestOdds = useMemo(
     () => market?.quotes.filter((quote) => quote.status !== "unavailable").reduce(
@@ -68,17 +67,17 @@ export default function SportsbookComparison() {
     [market],
   );
   const lowestProfit = useMemo(
-    () => market ? Math.min(...market.quotes.map((quote) => profitForStake(COMPARISON_STAKE, quote.americanOdds))) : 0,
-    [market],
+    () => market ? Math.min(...market.quotes.map((quote) => profitForStake(comparisonStake, quote.americanOdds))) : 0,
+    [comparisonStake, market],
   );
 
   return (
     <section className="odds-comparison feature-surface" aria-labelledby="odds-title">
       <div className="feature-heading">
         <div>
-          <div className="eyebrow-row"><span>Platinum</span>{market?.fixture && <strong>Demo Data</strong>}</div>
+          <div className="eyebrow-row"><span>Premium</span>{market?.fixture && <strong>Demo Data</strong>}</div>
           <h2 id="odds-title">Sportsbook Odds Comparison</h2>
-          <p>Compare the same wager across supported books before placing it.</p>
+          <p>Best available prices for the wager already analyzed above.</p>
         </div>
         {entitled && (
           <button className="refresh-button" type="button" onClick={() => void load(true)} disabled={loading}>
@@ -104,7 +103,7 @@ export default function SportsbookComparison() {
             <div><small>Wager</small><h3>{market.label}</h3></div>
             <div className="market-meta">
               <span>{fromCache ? "Cached response" : "Fresh response"}</span>
-              <span>Payout comparison uses a ${COMPARISON_STAKE} stake</span>
+              <span>Payout comparison uses your ${comparisonStake.toFixed(2)} stake</span>
             </div>
           </div>
           <div className="odds-table-wrap">
@@ -112,7 +111,7 @@ export default function SportsbookComparison() {
               <thead><tr><th>Sportsbook</th><th>American</th><th>Decimal</th><th>Profit</th><th>Updated</th></tr></thead>
               <tbody>
                 {market.quotes.map((quote) => {
-                  const profit = profitForStake(COMPARISON_STAKE, quote.americanOdds);
+                  const profit = profitForStake(comparisonStake, quote.americanOdds);
                   const isBest = quote.sportsbookId === bestOdds?.sportsbookId;
                   return (
                     <tr key={quote.sportsbookId} className={isBest ? "best-odds" : undefined}>

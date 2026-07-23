@@ -1,5 +1,6 @@
 import { env } from "./env";
 import type { OddsMarket, OddsProvider, SportsbookQuote } from "../types/odds";
+import type { WagerContext } from "../types/betting";
 
 export class OddsProviderError extends Error {
   readonly code: "missing_api_key" | "provider_outage" | "rate_limited";
@@ -29,14 +30,17 @@ const fixtureQuotes: Array<Omit<SportsbookQuote, "updatedAt"> & { ageMinutes: nu
 export class FixtureOddsProvider implements OddsProvider {
   readonly name = "Demo fixture";
 
-  async getMarket(marketId: string): Promise<OddsMarket> {
+  async getMarket(wager: WagerContext): Promise<OddsMarket> {
     const now = Date.now();
+    const adjustment = wager.numberOfLegs > 1 ? wager.americanOdds + 10 : wager.americanOdds;
+    const quoteOffsets = [5, 0, -5, 2, -2, 0];
     return {
-      id: marketId,
-      label: "Anthony Edwards Over 28.5 Points",
+      id: wager.description.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      label: wager.description,
       fixture: true,
-      quotes: fixtureQuotes.map(({ ageMinutes, ...quote }) => ({
+      quotes: fixtureQuotes.map(({ ageMinutes, ...quote }, index) => ({
         ...quote,
+        americanOdds: adjustment + quoteOffsets[index],
         updatedAt: new Date(now - ageMinutes * 60_000).toISOString(),
       })),
     };

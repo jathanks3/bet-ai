@@ -6,5 +6,7 @@ describe("centralized entitlements", () => {
     expect(hasEntitlement("platinum", "sportsbook_odds_comparison")).toBe(true);
     expect(hasEntitlement("free", "sportsbook_odds_comparison")).toBe(false);
     expect(() => requireEntitlement("free", "sportsbook_odds_comparison")).toThrow(EntitlementError);
+    expect(hasEntitlement("platinum", "betting_profit_projection")).toBe(true);
+    expect(() => requireEntitlement("free", "betting_profit_projection")).toThrow(EntitlementError);
   });
 });

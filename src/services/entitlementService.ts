@@ -1,11 +1,11 @@
 export type SubscriptionPlan = "free" | "platinum";
-export type Entitlement = "sportsbook_odds_comparison";
+export type Entitlement = "sportsbook_odds_comparison" | "betting_profit_projection";
 
 export class EntitlementError extends Error {
   readonly entitlement: Entitlement;
 
   constructor(entitlement: Entitlement) {
-    super("Sportsbook Odds Comparison requires a Platinum subscription.");
+    super("This betting tool requires a Premium subscription.");
     this.entitlement = entitlement;
     this.name = "EntitlementError";
   }
@@ -13,7 +13,7 @@ export class EntitlementError extends Error {
 
 const PLAN_ENTITLEMENTS: Record<SubscriptionPlan, ReadonlySet<Entitlement>> = {
   free: new Set(),
-  platinum: new Set(["sportsbook_odds_comparison"]),
+  platinum: new Set(["sportsbook_odds_comparison", "betting_profit_projection"]),
 };
 
 export function hasEntitlement(plan: SubscriptionPlan, entitlement: Entitlement) {

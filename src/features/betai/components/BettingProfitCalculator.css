@@ -1,13 +1,17 @@
 .calculator-layout { display: grid; grid-template-columns: minmax(240px, .8fr) minmax(360px, 1.2fr); gap: 28px; margin-top: 28px; }
 .calculator-form { display: grid; gap: 14px; }
+.wager-context-summary { display: grid; gap: 8px; }
+.wager-context-summary > div { padding: 10px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); }
+.wager-context-summary small, .wager-context-summary strong { display: block; }
+.wager-context-summary small { color: var(--text-tertiary); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+.wager-context-summary strong { margin-top: 4px; font-size: 13px; text-transform: capitalize; }
 .calculator-form label { display: grid; gap: 7px; color: var(--text-secondary); font-size: 12px; font-weight: 600; }
 .calculator-form label small { color: var(--text-tertiary); font-weight: 400; }
 .calculator-form input:not([type="checkbox"]), .calculator-form select {
   width: 100%; min-width: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
   background: var(--bg-surface-raised); color: var(--text-primary); padding: 11px 12px; font: inherit; font-size: 14px;
 }
-.preset-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: -7px; }
-.preset-row button, .scenario-tabs button {
+.scenario-tabs button {
   border: 1px solid var(--border-subtle); background: transparent; color: var(--text-secondary); border-radius: 7px; padding: 7px 4px; cursor: pointer;
 }
 .compound-toggle { grid-template-columns: auto 1fr !important; align-items: center; }
@@ -31,7 +35,6 @@
 }
 @media (max-width: 430px) {
   .feature-surface { padding: 16px; }
-  .preset-row { grid-template-columns: repeat(3, 1fr); }
   .scenario-tabs { grid-template-columns: 1fr; }
   .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .time-projections { grid-template-columns: 1fr; }

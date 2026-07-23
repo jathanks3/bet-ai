@@ -30,5 +30,6 @@ export type OddsProviderErrorCode =
 
 export interface OddsProvider {
   readonly name: string;
-  getMarket(marketId: string): Promise<OddsMarket>;
+  getMarket(wager: WagerContext): Promise<OddsMarket>;
 }
+import type { WagerContext } from "./betting";

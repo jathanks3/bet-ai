@@ -1,4 +1,5 @@
 import { americanToDecimal, breakEvenPercent, profitForStake } from "./oddsMath";
+import { requireEntitlement, type SubscriptionPlan } from "./entitlementService";
 
 export type ProjectionPeriod = "daily" | "weekly" | "monthly" | "yearly";
 export type ProjectionScenario = "expected" | "all_wins" | "break_even";
@@ -81,4 +82,9 @@ export function calculateProjection(input: ProjectionInput): ProjectionResult {
     monthlyProfit: yearlyProfit / 12,
     yearlyProfit,
   };
+}
+
+export function calculatePremiumProjection(plan: SubscriptionPlan, input: ProjectionInput) {
+  requireEntitlement(plan, "betting_profit_projection");
+  return calculateProjection(input);
 }
