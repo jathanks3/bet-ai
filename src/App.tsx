@@ -4,15 +4,19 @@ import Tabs from "./ui/Tabs";
 import AnalyzeBetPanel from "./features/betai/components/AnalyzeBetPanel";
 import FindABetPanel from "./features/betai/components/FindABetPanel";
 import BuildParlayPanel from "./features/betai/components/BuildParlayPanel";
+import SportsbookComparison from "./features/betai/components/SportsbookComparison";
+import BettingProfitCalculator from "./features/betai/components/BettingProfitCalculator";
 import { env } from "./services/env";
 import "./App.css";
 
-type WorkflowId = "analyze" | "find" | "parlay";
+type WorkflowId = "analyze" | "find" | "parlay" | "odds" | "calculator";
 
 const WORKFLOW_TABS: { id: WorkflowId; label: string }[] = [
   { id: "analyze", label: "Analyze My Bet" },
   { id: "find", label: "Find a Bet" },
   { id: "parlay", label: "Build My Parlay" },
+  { id: "odds", label: "Compare Odds" },
+  { id: "calculator", label: "Profit Calculator" },
 ];
 
 function App() {
@@ -38,6 +42,8 @@ function App() {
         {activeTab === "analyze" && <AnalyzeBetPanel />}
         {activeTab === "find" && <FindABetPanel />}
         {activeTab === "parlay" && <BuildParlayPanel />}
+        {activeTab === "odds" && <SportsbookComparison />}
+        {activeTab === "calculator" && <BettingProfitCalculator />}
       </div>
     </div>
   );

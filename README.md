@@ -4,11 +4,13 @@ BetAI is an AI sports betting analyst — not just a chatbot. It rates a bet, gi
 
 ## What it does
 
-BetAI supports three workflows, all producing the same kind of result — an overall rating, a verdict, a confidence score, and a leg-by-leg breakdown of what's helping and hurting the bet:
+BetAI supports three analysis workflows plus two decision tools. The analysis workflows produce an overall rating, verdict, confidence score, and leg-by-leg breakdown:
 
 - **Analyze My Bet** — paste or type a bet slip (one leg per line) and get a full breakdown. Screenshot upload is designed in and coming soon.
 - **Find a Bet** — ask BetAI about a team or matchup ("Best bet for Lakers tonight") and get a research-backed recommendation.
 - **Build My Parlay** — pick a sport, leg count, and risk level, and BetAI assembles and rates a parlay for you.
+- **Compare Odds (Platinum)** — compare realistic demo prices from six sportsbooks for the same wager, including decimal conversion, best price, payout difference, timestamps, stale labels, caching, and manual refresh.
+- **Profit Calculator** — estimate expected value, all-win hypothetical, and break-even scenarios across daily, weekly, monthly, and yearly periods.
 
 Every result reports:
 
@@ -32,6 +34,7 @@ The mock service is written behind a stable interface (`AnalysisService`) and al
 - Vite (dev server & build)
 - Plain CSS with a shared design-token theme (`src/styles/theme.css`) — no CSS framework
 - ESLint (flat config) + `tsc` for type checking
+- Vitest for calculation/service tests and Playwright for browser/mobile tests
 
 No backend, no database, no auth, no payments — this is a static, client-only app by design at this stage.
 
@@ -47,6 +50,8 @@ npm run dev       # start the dev server (http://localhost:5173)
 npm run build     # type-check and produce a production build in dist/
 npm run preview   # serve the production build locally
 npm run lint      # run ESLint
+npm test          # run unit tests
+npm run test:e2e  # run Playwright feature and mobile tests
 ```
 
 ## Environment variables
@@ -57,6 +62,11 @@ Copy `.env.example` to `.env.local` and adjust as needed:
 | --- | --- | --- |
 | `VITE_APP_NAME` | `BetAI` | Display name shown in the app header |
 | `VITE_MOCK_DELAY_MS` | `700` | Base artificial latency for the mock analysis service, so loading states feel realistic |
+| `VITE_DEMO_PLAN` | `platinum` | Demo account plan; set to `free` to verify the centralized odds-comparison gate |
+| `VITE_ODDS_PROVIDER` | `fixture` | Odds adapter selection; fixture mode is the only implemented adapter |
+| `VITE_ODDS_API_BASE_URL` | empty | Reserved backend/provider endpoint |
+| `VITE_ODDS_API_KEY` | empty | Development adapter detection only; never expose production secrets through Vite |
+| `VITE_ODDS_CACHE_TTL_MS` | `60000` | Client service cache duration in milliseconds |
 
 `VITE_API_BASE_URL` and `VITE_SPORTS_DATA_API_KEY` are reserved in `.env.example` for when a real backend is connected — they aren't read by any code yet.
 
@@ -74,6 +84,8 @@ src/
                                 BetAnalysisCard).
   services/                    Swappable business logic and data access
                                 (analysisService, mockContent, teamCatalogService, env).
+                                Odds comparison uses provider -> entitlement/cache service
+                                -> UI. Calculator math is a pure tested service.
   types/                       Shared types (Finding, BetLeg, BetSlipAnalysis, etc.)
 ```
 
@@ -85,6 +97,19 @@ src/
 - Real AI-generated analysis (replacing the mock phrase bank)
 - Bet slip screenshot upload/parsing
 - Accounts, saved history, payments — deliberately out of scope until the product itself is proven
+
+## Odds provider and entitlement architecture
+
+`OddsProvider` is the stable provider contract. `FixtureOddsProvider` supplies clearly labeled Demo Data without scraping; `ApiOddsProvider` represents the legitimate-provider boundary and returns explicit missing-key/outage errors until a licensed provider is selected. `OddsComparisonService` performs the Platinum check before provider access, then applies caching and manual-refresh behavior.
+
+The current app has no backend or authenticated accounts. The centralized client service prevents accidental or UI-only access, but client code cannot provide tamper-proof authorization. When accounts and a backend are added, the backend must repeat `requireEntitlement` before making provider calls and keep provider keys server-side.
+
+## Known limitations
+
+- Odds are realistic fixtures, not live sportsbook prices, and only the approved Anthony Edwards example market is included.
+- The API adapter is intentionally a readiness boundary; no sportsbook is scraped and no paid provider is connected.
+- Rate-limit and outage states are modeled for adapters and displayed by the UI, but fixture mode does not generate real network failures.
+- Projections are estimates based on the supplied win rate. Compounding applies a constant expected return per bet and does not model limits, changing stake sizes, pushes, voids, taxes, deposits, or withdrawals.
 
 ## About 3Stone AI
 
