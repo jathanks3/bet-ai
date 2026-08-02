@@ -5,6 +5,7 @@ import AnalyzeBetPanel from "./features/betai/components/AnalyzeBetPanel";
 import FindABetPanel from "./features/betai/components/FindABetPanel";
 import BuildParlayPanel from "./features/betai/components/BuildParlayPanel";
 import PremiumUpgradeDialog from "./features/betai/components/PremiumUpgradeDialog";
+import ReportProblemButton from "./ui/ReportProblemButton";
 import { env } from "./services/env";
 import "./App.css";
 
@@ -41,6 +42,7 @@ function App() {
         {activeTab === "parlay" && <BuildParlayPanel />}
       </div>
       <PremiumUpgradeDialog />
+      <ReportProblemButton />
     </div>
   );
 }
